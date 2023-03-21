@@ -9,13 +9,10 @@ def uenv_populate(d):
 
     env["devicetree_image"] = boot_files_dtb_filepath(d)
     env["loaddtb"] = "load mmc 0 ${devicetree_load_address} ${devicetree_image}"
+    env["bootkernel"] = "run loadkernel && run loaddtb && " + uboot_boot_cmd(d) + " ${kernel_load_address} - ${devicetree_load_address}"
 
-    # TODO: Hardcoding, not nice. Is there any way to know the image that is currently build
-    #       in another recipe?
-    env["ramdisk_image"] = "ebaz4205-image-standard-ebaz4205-zynq7.cpio.gz.u-boot"
-    env["loadramdisk"] = "load mmc 0 ${ramdisk_load_address} ${ramdisk_image}"
-    
     env["bootargs"] = d.getVar("KERNEL_BOOTARGS")
+    env["uenvcmd"] = "run bootkernel"
 
     bitstream, bitstreamtype = boot_files_bitstream(d)
     if bitstream:
@@ -26,6 +23,8 @@ def uenv_populate(d):
 
         # load bitstream first with loadfpa
         env["fpga_config"] = "fpga ${bitstream_type} 0 ${bitstream_load_address} ${filesize}"
+
+    env["bootdelay"] = "3"
 
     return env
 

@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Heavy kernel debugging hackery"
+define KFEATURE_COMPATIBILITY board
+
+kconfig hardware debug.cfg

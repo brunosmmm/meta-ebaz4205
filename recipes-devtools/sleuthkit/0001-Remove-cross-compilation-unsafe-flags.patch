@@ -1,0 +1,28 @@
+From 75249f53637391fc5a519581dac80fb11716422d Mon Sep 17 00:00:00 2001
+From: Bruno Morais <brunosmmm@gmail.com>
+Date: Thu, 21 Jan 2021 14:42:06 -0500
+Subject: [PATCH] Remove cross-compilation unsafe flags
+
+---
+ configure.ac | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 94c0c3b7..49b7567d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -97,11 +97,6 @@ case "$host" in
+   dnl Adding the native /usr/local is wrong for cross-compiling
+   ;;
+ *)
+-  dnl Not all compilers include /usr/local in the include and link path
+-  if test -d /usr/local/include; then
+-    CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+-    LDFLAGS="$LDFLAGS -L/usr/local/lib"
+-  fi
+   ;;
+ esac
+ 
+-- 
+2.27.0
+

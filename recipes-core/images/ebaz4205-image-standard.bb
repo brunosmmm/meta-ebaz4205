@@ -6,13 +6,45 @@ IMAGE_INSTALL += "\
         net-tools \
         nfs-utils \
         mtd-utils \
+        squashfs-tools \
         devmem2 \
         strace \
-	uioctl \
+	      uioctl \
         ldd \
+        vim \
+        i2c-tools \
+        python3 \
+        python3-pip \
+        openocd \
+        sigrok-cli \
+        packagegroup-core-full-cmdline \
+        spitools \
+        htop \
+        iotop \
+        valgrind \
+        git \
+        wget \
+        flashrom \
+        fish \
+        tmux \
+        screen \
+        packagegroup-core-buildessential \
+        gdb \
+        kernel-devsrc \
+        distro-feed-configs \
+        tzdata \
+        binwalk \
+        aximux \
+        kernel-modules \
+        libgpiod \
+        snapclient \
+        alsa-utils \
+        gstreamer1.0 \
         "
 
-IMAGE_FEATURES += "ssh-server-dropbear \
+IMAGE_FEATURES += "ssh-server-openssh \
          package-management \
          tools-debug \
          "
+
+IMAGE_LINGUAS = "en-us"

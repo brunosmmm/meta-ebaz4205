@@ -1,37 +1,22 @@
 / {
-        chosen {
-                bootargs = "console=ttyPS0,115200 earlyprintk root=/dev/mmcblk0p2 rw uio_pdrv_genirq.of_id=generic-uio";
-                stdout-path = "serial0:115200n8";
-        };
 
-        aliases {
-                ethernet0 = &gem0;
-                serial0 = &uart1;
-                mmc0 = &sdhci0;
-        };
-
-        memory@0 {
-                device_type = "memory";
-                reg = <0x0 0x10000000>;
-        };
-
-	leds {
-                compatible = "gpio-leds";
+   leds {
+      compatible = "gpio-leds";
 
 		led-green {
-                        label = "led-green";
+      label = "led-green";
 			gpios = <&gpio0 55 1>;
 			default-state = "off";
-                        linux,default-trigger = "heartbeat";
+      linux,default-trigger = "heartbeat";
 		};
 		led-red {
-                        label = "led-red";
+      label = "led-red";
 			gpios = <&gpio0 54 1>;
 			default-state = "off";
 		};
-        };
+   };
 
-        buttons {
+   buttons {
                 compatible = "gpio-keys-polled";
                 poll-interval = <100>;
 
@@ -49,25 +34,7 @@
                         linux,code = <105>;
                         autorepeat;
                 };
-        };
-};
-
-&uart1 {
-       status = "okay";
-};
-
-&gem0 {
-        status = "okay";
-        phy-mode = "rgmii-id";
-        phy-handle = <&ethernet_phy0>;
-
-        ethernet_phy0: ethernet-phy@0 {
-                reg = <0>;
-        };
-};
-
-&sdhci0 {
-        status = "okay";
+   };
 };
 
 &gpio0 {
@@ -84,7 +51,7 @@
         		compatible = "fixed-partitions";
         		#address-cells = <1>;
         		#size-cells = <1>;
-                
+
                         partition0: partition@0 {
         		         label = "partition0";
                                  reg = <0x0000000 0x1ffffff>;
@@ -103,6 +70,37 @@
                         };
                 };
         };
+};
+
+&xadc_wiz_0 {
+		xlnx,channels {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			channel@3 {
+				reg = <3>;
+			};
+			channel@11 {
+				reg = <11>;
+			};
+		};
+};
+
+&axi_mux_0 {
+
+  signal-names = "gpio0.0", "gpio0.1", "gpio0.2", "gpio0.3",
+                 "gpio0.4", "gpio0.5", "gpio0.6", "gpio0.7";
+  alternate-names = "i2c0.sda", "i2c0.scl", "spi0.io0", "spi0.io1",
+                    "spi0.ss", "tmr0.pwm_cap0", "tmr1.pwm_cap0", "tmr2.pwm_cap0";
+
+};
+
+&axi_mux_1 {
+
+  signal-names = "gpio0.8", "gpio0.9", "gpio0.10", "gpio0.11",
+                 "gpio0.12", "gpio0.13", "gpio0.14", "gpio0.15";
+  alternate-names = "uart0.rxd", "uart0.txd", "uart1.rxd", "uart1.txd",
+                    "i2c1.sda", "i2c1.scl", "tmr3.pwm_cap0", "tmr3.cap1";
+
 };
 
 &audio_formatter_0 {
