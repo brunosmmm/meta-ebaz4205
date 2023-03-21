@@ -13,6 +13,6 @@ CLEANBROKEN = "1"
 
 inherit pypi setuptools3
 
-RDEPENDS_${PN} = "python3-typing-extensions \
+RDEPENDS:${PN} = "python3-typing-extensions \
 	          python3-dataclasses \
                  "

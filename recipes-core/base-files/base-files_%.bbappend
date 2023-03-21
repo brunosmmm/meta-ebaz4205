@@ -1,7 +1,7 @@
-FILESEXTRAPATHS_append := "${THISDIR}/files:"
+FILESEXTRAPATHS:append := "${THISDIR}/files:"
 
-SRC_URI_append = " file://fstab"
+SRC_URI:append = " file://fstab"
 
-do_install_append () {
+do_install:append () {
         install -d ${D}/media/mmcblk0p1
 }

@@ -13,6 +13,6 @@ CLEANBROKEN = "1"
 
 inherit pypi setuptools3
 
-RDEPENDS_${PN} = "python3-starlette \
+RDEPENDS:${PN} = "python3-starlette \
 	          python3-pydantic \
                  "

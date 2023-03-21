@@ -14,10 +14,10 @@ SRCREV = "${AUTOREV}"
 
 S = "${WORKDIR}/src"
 
-FILES_${PN} += "${bindir}"
-FILES_${PN}-dbg += "${bindir}/.debug"
+FILES:${PN} += "${bindir}"
+FILES:${PN}-dbg += "${bindir}/.debug"
 
-SYSTEMD_SERVICE_${PN} += "xvc-server.service"
+SYSTEMD_SERVICE:${PN} += "xvc-server.service"
 
 do_compile() {
 	     ${CC} ${LDFLAGS} xvcServer.c -Os -o xvc_server

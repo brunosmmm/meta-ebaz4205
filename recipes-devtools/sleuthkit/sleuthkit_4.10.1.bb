@@ -1,9 +1,9 @@
 DESCRIPTION = "The sleuth kit"
 LICENSE = "OTHER"
 
-FILESEXTRAPATHS_prepend = "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend = "${THISDIR}/files:"
 SRC_URI = "git://github.com/sleuthkit/sleuthkit.git;branch=develop;protocol=https"
-SRC_URI_append =  " file://0001-Remove-cross-compilation-unsafe-flags.patch"
+SRC_URI:append =  " file://0001-Remove-cross-compilation-unsafe-flags.patch"
 
 SRCREV = "e8bc8f1f9fd94f70238635e7e2ce88883bdda377"
 LIC_FILES_CHKSUM = "file://licenses/Apache-LICENSE-2.0.txt;md5=3b83ef96387f14655fc854ddc3c6bd57 \
@@ -20,9 +20,9 @@ inherit pkgconfig autotools-brokensep
 
 EXTRA_OECONF = "--disable-java --without-afflib --without-libewf"
 DEPENDS = "zlib"
-RDEPENDS_${PN} = "perl"
+RDEPENDS:${PN} = "perl"
 
-FILES_${PN} += "/usr/share/tsk/*"
+FILES:${PN} += "/usr/share/tsk/*"
 
 do_configure() {
     # remove reference to host machine perl
