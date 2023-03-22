@@ -1,7 +1,7 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/config:${THISDIR}/files:"
 
 # LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
-LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 SRC_URI:append = " \
                  file://bsp/net/eth.scc \
                  file://bsp/fs/mtd.scc \
