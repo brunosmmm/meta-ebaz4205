@@ -37,9 +37,6 @@ IMAGE_INSTALL += "\
         aximux \
         kernel-modules \
         libgpiod \
-        snapclient \
-        alsa-utils \
-        gstreamer1.0 \
         "
 
 IMAGE_FEATURES += "ssh-server-openssh \
