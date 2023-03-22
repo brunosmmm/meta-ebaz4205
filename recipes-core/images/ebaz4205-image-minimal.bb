@@ -1,5 +1,5 @@
-require recipes-core/images/core-image-minimal.bb
-inherit extrausers
+# require recipes-core/images/core-image-minimal.bb
+inherit extrausers core-image
 
 DESCRIPTION = "A small image just capable of allowing the device to boot"
 
