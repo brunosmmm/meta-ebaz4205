@@ -103,10 +103,18 @@
 
 };
 
-&audio_formatter_0 {
-		xlnx,tx = <&i2s_transmitter_0>;
+&axi_timer_0 {
+  clock-frequency = <100000000>;
 };
 
-&i2s_transmitter_0 {
-		xlnx,snd-pcm = <&audio_formatter_0>;
+&axi_timer_1 {
+  clock-frequency = <100000000>;
+};
+
+&axi_timer_2 {
+  clock-frequency = <100000000>;
+};
+
+&axi_timer_3 {
+  clock-frequency = <100000000>;
 };
