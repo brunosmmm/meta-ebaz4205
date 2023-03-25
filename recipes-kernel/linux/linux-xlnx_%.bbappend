@@ -7,6 +7,9 @@ SRC_URI:append = " \
                  file://bsp/fs/mtd.scc \
                  file://bsp/other/other.scc \
                  file://bsp/debug/debug.scc \
+                 file://bsp/net/wifi.cfg \
+                 file://i2c.cfg \
+                 file://input.cfg \
                  "
 
 KERNEL_FEATURES:append = " \
@@ -21,4 +24,4 @@ KERNEL_VERSION_SANITY_SKIP="1"
 KBRANCH = "master"
 SRCREV = "f9c8e14ae03c937a79e1c904d004d80a0db3647e"
 
-PR="r1"
+PR="r3"
