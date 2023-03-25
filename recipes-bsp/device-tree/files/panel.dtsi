@@ -1,7 +1,7 @@
 / {
   rotary@0 {
 	  compatible = "rotary-encoder";
-	  gpios = <&pcf8575 1 0>, <&pcf8575 0 0>;
+	  gpios = <&pcf8575 15 1>, <&pcf8575 0 1>;
 	  linux,axis = <0>; /* REL_X */
 	  rotary-encoder,encoding = "gray";
 	  rotary-encoder,relative-axis;
@@ -18,55 +18,55 @@
     button-enter {
       label = "Enter";
       linux,code = <133>;
-      gpios = <&pcf8575 13 0>;
+      gpios = <&pcf8575 13 1>;
     };
 
     button-0 {
       label = "Button 0";
       linux,code = <38>;
-      gpios = <&pcf8575 2 0>;
+      gpios = <&pcf8575 2 1>;
     };
 
     button-1 {
       label = "Button 1";
       linux,code = <39>;
-      gpios = <&pcf8575 3 0>;
+      gpios = <&pcf8575 3 1>;
     };
 
     button-2 {
       label = "Button 2";
       linux,code = <40>;
-      gpios = <&pcf8575 4 0>;
+      gpios = <&pcf8575 4 1>;
     };
 
     button-3 {
       label = "Button 3";
       linux,code = <41>;
-      gpios = <&pcf8575 5 0>;
+      gpios = <&pcf8575 5 1>;
     };
 
     button-4 {
       label = "Button 4";
       linux,code = <42>;
-      gpios = <&pcf8575 6 0>;
+      gpios = <&pcf8575 6 1>;
     };
 
     button-5 {
       label = "Button 5";
       linux,code = <43>;
-      gpios = <&pcf8575 7 0>;
+      gpios = <&pcf8575 7 1>;
     };
 
     button-6 {
       label = "Button 6";
       linux,code = <44>;
-      gpios = <&pcf8575 15 0>;
+      gpios = <&pcf8575 1 1>;
     };
 
     button-7 {
       label = "Button 7";
       linux,code = <45>;
-      gpios = <&pcf8575 12 0>;
+      gpios = <&pcf8575 12 1>;
     };
   };
 };
