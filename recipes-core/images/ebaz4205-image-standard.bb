@@ -37,6 +37,10 @@ IMAGE_INSTALL += "\
         aximux \
         kernel-modules \
         libgpiod \
+        libgpiod-tools \
+        libevdev \
+        python3-evdev \
+        python3-gpiod \
         "
 
 IMAGE_FEATURES += "ssh-server-openssh \
