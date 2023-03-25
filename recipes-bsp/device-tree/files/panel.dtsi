@@ -1,0 +1,120 @@
+/ {
+  rotary@0 {
+	  compatible = "rotary-encoder";
+	  gpios = <&pcf8575 1 0>, <&pcf8575 0 0>;
+	  linux,axis = <0>; /* REL_X */
+	  rotary-encoder,encoding = "gray";
+	  rotary-encoder,relative-axis;
+  };
+
+  beeper: beeper {
+    compatible = "gpio-beeper";
+    gpios = <&pcf8575 14 0>;
+  };
+
+  panel-keys {
+    compatible = "gpio-keys";
+
+    button-enter {
+      label = "Enter";
+      linux,code = <133>;
+      gpios = <&pcf8575 13 0>;
+    };
+
+    button-0 {
+      label = "Button 0";
+      linux,code = <38>;
+      gpios = <&pcf8575 2 0>;
+    };
+
+    button-1 {
+      label = "Button 1";
+      linux,code = <39>;
+      gpios = <&pcf8575 3 0>;
+    };
+
+    button-2 {
+      label = "Button 2";
+      linux,code = <40>;
+      gpios = <&pcf8575 4 0>;
+    };
+
+    button-3 {
+      label = "Button 3";
+      linux,code = <41>;
+      gpios = <&pcf8575 5 0>;
+    };
+
+    button-4 {
+      label = "Button 4";
+      linux,code = <42>;
+      gpios = <&pcf8575 6 0>;
+    };
+
+    button-5 {
+      label = "Button 5";
+      linux,code = <43>;
+      gpios = <&pcf8575 7 0>;
+    };
+
+    button-6 {
+      label = "Button 6";
+      linux,code = <44>;
+      gpios = <&pcf8575 15 0>;
+    };
+
+    button-7 {
+      label = "Button 7";
+      linux,code = <45>;
+      gpios = <&pcf8575 12 0>;
+    };
+  };
+};
+
+&axi_iic_2 {
+
+  pcf8575: gpio@20 {
+    compatible = "nxp,pcf8575";
+    reg = <0x20>;
+    interrupt-parent = <&axi_gpio_0>;
+    interrupts = <30 0>;
+    gpio-controller;
+    #gpio-cells = <2>;
+    interrupt-controller;
+    #interrupt-cells = <2>;
+
+    beep-hog {
+      gpio-hog;
+      gpios = <14 0>;
+      output-low;
+      line-name = "Beeper";
+    };
+  };
+
+};
+
+// insert gpio hogs for now
+&axi_gpio_0 {
+
+  esp-reset-hog {
+    gpio-hog;
+    gpios = <31 0>;
+    output-high;
+    line-name = "ESP32-RST";
+  };
+
+  relay1-hog {
+    gpio-hog;
+    gpios = <26 0>;
+    output-low;
+    line-name = "Relay1";
+  };
+
+  relay2-hog {
+    gpio-hog;
+    gpios = <27 0>;
+    output-low;
+    line-name = "Relay2";
+  };
+
+};
