@@ -42,6 +42,7 @@ IMAGE_INSTALL += "\
         python3-evdev \
         python3-gpiod \
         python3-ipython \
+        python3-pyserial \
         "
 
 IMAGE_FEATURES += "ssh-server-openssh \
