@@ -10,6 +10,7 @@ SRC_URI:append = " \
                  file://bsp/net/wifi.cfg \
                  file://i2c.cfg \
                  file://input.cfg \
+                 file://serial.cfg \
                  "
 
 KERNEL_FEATURES:append = " \
