@@ -1,5 +1,4 @@
-obj-m := axidma.o
-axidma-objs := ./driver/axi_dma.o ./driver/axidma_chrdev.o ./driver/axidma_dma.o ./driver/axidma_of.o
+obj-m := dma-proxy.o
 
 SRC := $(shell pwd)
 
