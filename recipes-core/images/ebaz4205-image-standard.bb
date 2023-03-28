@@ -43,6 +43,7 @@ IMAGE_INSTALL += "\
         python3-gpiod \
         python3-ipython \
         python3-pyserial \
+        socat \
         "
 
 IMAGE_FEATURES += "ssh-server-openssh \
