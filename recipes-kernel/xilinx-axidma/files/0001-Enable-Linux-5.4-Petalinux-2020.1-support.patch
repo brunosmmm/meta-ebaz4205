@@ -1,0 +1,127 @@
+From c158c1c0906ee1898c41811018dc71efb3a0b3c3 Mon Sep 17 00:00:00 2001
+From: Martin Anctil <manctil@lumibird.com>
+Date: Tue, 19 Jul 2022 15:07:47 -0400
+Subject: [PATCH] Enable Linux 5.4 (Petalinux 2020.1) support.
+
+---
+ driver/axi_dma.c       |  1 +
+ driver/axidma_chrdev.c |  6 +++---
+ driver/axidma_dma.c    |  4 ++--
+ driver/axidma_of.c     | 16 +++++++---------
+ 4 files changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/driver/axi_dma.c b/driver/axi_dma.c
+index ff8f8c5..1a2f2e9 100644
+--- a/driver/axi_dma.c
++++ b/driver/axi_dma.c
+@@ -15,6 +15,7 @@
+ #include <linux/slab.h>             // Allocation functions
+ #include <linux/stat.h>             // Module parameter permission values
+ #include <linux/platform_device.h>  // Platform device definitions
++#include <linux/of_address.h>
+ 
+ // Local dependencies
+ #include "axidma.h"                 // Internal definitions
+diff --git a/driver/axidma_chrdev.c b/driver/axidma_chrdev.c
+index 90a7d9f..dba28d3 100644
+--- a/driver/axidma_chrdev.c
++++ b/driver/axidma_chrdev.c
+@@ -274,7 +274,7 @@ static int axidma_mmap(struct file *file, struct vm_area_struct *vma)
+     dma_alloc->user_addr = (void *)vma->vm_start;
+ 
+     // Configure the DMA device
+-    of_dma_configure(dev->device, NULL);
++    of_dma_configure(&dev->pdev->dev, NULL, true);
+ 
+     // Allocate the requested region a contiguous and uncached for DMA
+     dma_alloc->kern_addr = dma_alloc_coherent(&dev->pdev->dev, dma_alloc->size,
+@@ -326,11 +326,11 @@ ret:
+ static bool axidma_access_ok(const void __user *arg, size_t size, bool readonly)
+ {
+     // Note that VERIFY_WRITE implies VERIFY_WRITE, so read-write is handled
+-    if (!readonly && !access_ok(VERIFY_WRITE, arg, size)) {
++    if (!readonly && !access_ok(arg, size)) {
+         axidma_err("Argument address %p, size %zu cannot be written to.\n",
+                    arg, size);
+         return false;
+-    } else if (!access_ok(VERIFY_READ, arg, size)) {
++    } else if (!access_ok(arg, size)) {
+         axidma_err("Argument address %p, size %zu cannot be read from.\n",
+                    arg, size);
+         return false;
+diff --git a/driver/axidma_dma.c b/driver/axidma_dma.c
+index 4b54de0..f8a9871 100644
+--- a/driver/axidma_dma.c
++++ b/driver/axidma_dma.c
+@@ -143,7 +143,7 @@ static struct axidma_chan *axidma_get_chan(struct axidma_device *dev,
+ static void axidma_dma_callback(void *data)
+ {
+     struct axidma_cb_data *cb_data;
+-    struct siginfo sig_info;
++    struct kernel_siginfo sig_info;
+ 
+     /* For synchronous transfers, notify the kernel thread waiting. For
+      * asynchronous transfers, send a signal to userspace if requested. */
+@@ -646,7 +646,7 @@ static int axidma_request_channels(struct platform_device *pdev,
+     for (i = 0; i < dev->num_chans; i++)
+     {
+         chan = &dev->channels[i];
+-        chan->chan = dma_request_slave_channel(&pdev->dev, chan->name);
++        chan->chan = dma_request_chan(&pdev->dev, chan->name);
+         if (chan->chan == NULL) {
+             axidma_err("Unable to get slave channel %d: %s.\n", i, chan->name);
+             rc = -ENODEV;
+diff --git a/driver/axidma_of.c b/driver/axidma_of.c
+index 85d98e9..fe7db97 100644
+--- a/driver/axidma_of.c
++++ b/driver/axidma_of.c
+@@ -95,14 +95,14 @@ static int axidma_of_parse_channel(struct device_node *dma_node, int channel,
+ 
+     // Go to the child node that we're parsing
+     dma_chan_node = of_get_next_child(dma_node, NULL);
+-    if (channel == 1) {
++    if (channel == 0) {
+         dma_chan_node = of_get_next_child(dma_node, dma_chan_node);
+     }
+ 
+     // Check if the specified node exists
+     if (dma_chan_node == NULL) {
+-        axidma_node_err(dma_chan_node, "Unable to find child node number %d.\n",
+-                channel);
++        axidma_err("Unable to find child node number %d.\n", channel);
++        return -EINVAL;
+     }
+ 
+     // Read out the channel's unique device id, and put it in the structure
+@@ -218,16 +218,14 @@ int axidma_of_parse_dma_nodes(struct platform_device *pdev,
+     dev->num_vdma_tx_chans = 0;
+     dev->num_vdma_rx_chans = 0;
+ 
+-    /* For each DMA channel specified in the deivce tree, parse out the
++    /* For each DMA channel specified in the device tree, parse out the
+      * information about the channel, namely its direction and type. */
+     for (i = 0; i < dev->num_chans; i++)
+     {
+         // Get the phanlde to the DMA channel
+-        rc = of_parse_phandle_with_args(driver_node, "dmas", "#dma-cells", i,
+-                                        &phandle_args);
++        rc = of_parse_phandle_with_args(driver_node, "dmas", "#dma-cells", i, &phandle_args);
+         if (rc < 0) {
+-            axidma_node_err(driver_node, "Unable to get phandle %d from the "
+-                            "'dmas' property.\n", i);
++            axidma_node_err(driver_node, "Unable to get phandle %d from the 'dmas' property.\n", i);
+             return rc;
+         }
+ 
+@@ -236,7 +234,7 @@ int axidma_of_parse_dma_nodes(struct platform_device *pdev,
+         channel = phandle_args.args[0];
+         if (phandle_args.args_count < 1) {
+             axidma_node_err(driver_node, "Phandle %d in the 'dmas' property is "
+-                            "is missing the channel direciton argument.\n", i);
++                            "is missing the channel direction argument.\n", i);
+             return -EINVAL;
+         } else if (channel != 0 && channel != 1) {
+             axidma_node_err(driver_node, "Phandle %d in the 'dmas' property "
+-- 
+2.39.2
+
