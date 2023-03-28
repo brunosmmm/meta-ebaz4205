@@ -11,6 +11,11 @@
     compatible = "gpio-beeper";
     gpios = <&pcf8575 14 0>;
   };
+  /* beeper { */
+	/*   compatible = "pwm-beeper"; */
+	/*   pwms = <&pwm0>; */
+	/*   amp-supply = <&beeper_amp>; */
+  /* }; */
 
   panel-keys {
     compatible = "gpio-keys";
@@ -68,6 +73,18 @@
       linux,code = <45>;
       gpios = <&pcf8575 12 1>;
     };
+  };
+
+  axidma_chrdev: axidma_chrdev@0 {
+    compatible = "xlnx,axidma-chrdev";
+    dmas = <&axi_dma_1 0>, <&axi_dma_1 1>;
+    dma-names = "tx_channel", "rx_channel";
+  };
+};
+
+&axi_dma_1 {
+  dma-channel@40410030 {
+    xlnx,device-id = <0x2>;
   };
 };
 
