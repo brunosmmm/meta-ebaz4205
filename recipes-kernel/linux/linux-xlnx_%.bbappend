@@ -20,9 +20,9 @@ KERNEL_FEATURES:append = " \
                          debug.scc \
                          "
 
-LINUX_VERSION = "6.1"
+LINUX_VERSION = "6.1.0-X"
 KERNEL_VERSION_SANITY_SKIP="1"
 KBRANCH = "master"
 SRCREV = "f9c8e14ae03c937a79e1c904d004d80a0db3647e"
 
-PR="r4"
+PR="r5"

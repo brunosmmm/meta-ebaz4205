@@ -44,6 +44,8 @@ IMAGE_INSTALL += "\
         python3-ipython \
         python3-pyserial \
         socat \
+        wireless-regdb-static \
+        libdrm \
         "
 
 IMAGE_FEATURES += "ssh-server-openssh \

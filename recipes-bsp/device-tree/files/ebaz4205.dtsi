@@ -1,14 +1,8 @@
 / {
-        chosen {
-                bootargs = "console=ttyPS0,115200 earlyprintk root=/dev/mmcblk0p2 rw uio_pdrv_genirq.of_id=generic-uio";
-                stdout-path = "serial0:115200n8";
-        };
-
-
-        memory@0 {
-                device_type = "memory";
-                reg = <0x0 0x10000000>;
-        };
+  memory@0 {
+    device_type = "memory";
+    reg = <0x0 0x10000000>;
+  };
 
 	leds {
                 compatible = "gpio-leds";
@@ -45,10 +39,31 @@
                         autorepeat;
                 };
         };
+
+  chosen {
+    bootargs = "console=ttyPS0,115200 earlyprintk root=/dev/mmcblk0p2 rw uio_pdrv_genirq.of_id=generic-uio";
+    stdout-path = "serial0:115200n8";
+  };
 };
 
+
 &uart1 {
-       status = "okay";
+  status = "okay";
+};
+
+&axi_uart16550_0 {
+};
+
+&axi_uart16550_1 {
+};
+
+&axi_iic_0 {
+  pinctrl-names = "default";
+  pinctrl-0 = <&pinctrl_i2c0>;
+};
+
+&axi_iic_1 {
+
 };
 
 &gem0 {
@@ -62,7 +77,13 @@
 };
 
 &sdhci0 {
-        status = "okay";
+  status = "okay";
+};
+
+&sdhci1 {
+  status = "okay";
+  max-frequency = <10000000>;
+  sdhci-caps-mask = <0x0 0x00200000>;
 };
 
 &gpio0 {
@@ -120,13 +141,39 @@
   alternate-names = "i2c0.sda", "i2c0.scl", "spi0.io0", "spi0.io1",
                     "spi0.ss", "tmr0.pwm_cap0", "tmr1.pwm_cap0", "tmr2.pwm_cap0";
 
+  i2c0 {
+    pinctrl_i2c0: i2c0group1 {
+      pins = <0 1>;
+    };
+  };
+  spi0 {
+    pinctrl_spi0: spi0group1 {
+      pins = <2 3 4>;
+    };
+  };
+  pwm0 {
+    pinctrl_pwm0: pwm0group1 {
+      pins = <5>;
+    };
+  };
+  pwm1 {
+    pinctrl_pwm1: pwm1group1 {
+      pins = <6>;
+    };
+  };
+  pwm2 {
+    pinctrl_pwm2: pwm2group1 {
+      pins = <7>;
+    };
+  };
+
 };
 
 &axi_mux_1 {
 
   signal-names = "gpio0.8", "gpio0.9", "gpio0.10", "gpio0.11",
                  "gpio0.12", "gpio0.13", "gpio0.14", "gpio0.15";
-  alternate-names = "uart0.rxd", "uart0.txd", "uart1.rxd", "uart1.txd",
+  alternate0-names = "uart0.rxd", "uart0.txd", "uart1.rxd", "uart1.txd",
                     "i2c1.sda", "i2c1.scl", "tmr3.pwm_cap0", "tmr3.cap1";
 
 };
@@ -146,3 +193,4 @@
 &axi_timer_3 {
   clock-frequency = <100000000>;
 };
+

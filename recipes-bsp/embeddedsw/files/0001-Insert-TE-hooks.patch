@@ -1,0 +1,74 @@
+From 6002bc43622af81bdc6357a53bc8760115984ca0 Mon Sep 17 00:00:00 2001
+From: Bruno <brunosmmm@gmail.com>
+Date: Sun, 9 Apr 2023 20:23:21 -0400
+Subject: [PATCH] Insert TE hooks
+
+---
+ lib/sw_apps/zynq_fsbl/src/fsbl_hooks.c | 16 ++++++++++++----
+ lib/sw_apps/zynq_fsbl/src/fsbl_hooks.h |  2 +-
+ 2 files changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.c b/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.c
+index c1014e53c9..bf6a8d7118 100644
+--- a/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.c
++++ b/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.c
+@@ -59,7 +59,9 @@ u32 FsblHookBeforeBitstreamDload(void)
+ 	 */
+ 	fsbl_printf(DEBUG_INFO,"In FsblHookBeforeBitstreamDload function \r\n");
+ 
+-	return (Status);
++  Status = TE_FsblHookBeforeBitstreamDload();
++
++  return (Status);
+ }
+ 
+ /******************************************************************************
+@@ -86,7 +88,9 @@ u32 FsblHookAfterBitstreamDload(void)
+ 	 */
+ 	fsbl_printf(DEBUG_INFO, "In FsblHookAfterBitstreamDload function \r\n");
+ 
+-	return (Status);
++  Status = TE_FsblHookAfterBitstreamDload();
++
++  return (Status);
+ }
+ 
+ /******************************************************************************
+@@ -113,7 +117,9 @@ u32 FsblHookBeforeHandoff(void)
+ 	 */
+ 	fsbl_printf(DEBUG_INFO,"In FsblHookBeforeHandoff function \r\n");
+ 
+-	return (Status);
++  Status = TE_FsblHookBeforeHandoff();
++
++  return (Status);
+ }
+ 
+ 
+@@ -132,7 +138,9 @@ void FsblHookFallback(void)
+ 	 * Errors to be stored in the status variable and returned
+ 	 */
+ 	fsbl_printf(DEBUG_INFO,"In FsblHookFallback function \r\n");
+-	while(1);
++
++  TE_FsblHookFallback();
++  while(1);
+ }
+ 
+ 
+diff --git a/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.h b/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.h
+index 9490084153..40629038dd 100644
+--- a/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.h
++++ b/lib/sw_apps/zynq_fsbl/src/fsbl_hooks.h
+@@ -32,7 +32,7 @@ extern "C" {
+ 
+ /***************************** Include Files *********************************/
+ #include "fsbl.h"
+-
++#include "te_fsbl_hooks.h"
+ 
+ /************************** Function Prototypes ******************************/
+ 
+-- 
+2.39.2
+

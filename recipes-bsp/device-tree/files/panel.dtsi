@@ -75,21 +75,42 @@
     };
   };
 
-  dma_proxy {
-    compatible = "xlnx,dma_proxy";
-    dmas = <&axi_dma_1 0 &axi_dma_1 1>;
-    dma-names = "dma_proxy_tx", "dma_proxy_rx";
+  reserved-memory {
+    #address-cells = <1>;
+    #size-cells = <1>;
+    ranges;
+    // Output frame buffer
+    tft_reserved: framebuffer@7C00000 {
+      no-map;
+      compatible = "removed-dma-pool";
+      reg = <0x7C00000 0x400000>;
+    };
+  };
+
+  chosen {
+    #address-cells = <1>;
+    #size-cells = <1>;
+    ranges;
+    tft_fb: framebuffer@7C00000 {           // HDMI out
+      compatible = "simple-framebuffer";
+      reg = <0x7C00000 (480 * 272 * 2)>;
+      width = <480>;
+      height = <272>;
+      stride = <(480 * 2)>;
+      /* format = "a8b8g8r8"; */
+      format = "r5g6b5";
+      status = "okay";
+      memory-region = <&tft_reserved>;
+    };
   };
 };
 
-&axi_dma_1 {
-  dma-channel@40410030 {
-    xlnx,device-id = <0x2>;
-  };
+
+&axi_vdma_0 {
+    status = "disabled";
 };
 
 &axi_iic_2 {
-
   pcf8575: gpio@20 {
     compatible = "nxp,pcf8575";
     reg = <0x20>;
