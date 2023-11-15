@@ -14,3 +14,8 @@ SRC_URI = " \
 S = "${WORKDIR}"
 
 PR = "r0"
+
+do_install:append() {
+  install -d ${D}${includedir}
+  install -m 0644 ${S}/dma-proxy.h ${D}${includedir}
+}
